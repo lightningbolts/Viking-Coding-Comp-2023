@@ -24,15 +24,18 @@ def main():
     length_of_passing_period = int(input("How long is each passing period? "))
     range_of_school_starting_times = input("What is the range of school starting times? ") # arr of different times XX:XX
     range_of_school_ending_times = input("What is the range of school ending times? ") # arr of different times XX:XX
+    misc_name = input("What is the name of the miscellaneous period? ")
+    misc_duration = int(input("How long is the miscellaneous period? "))
+    misc_days = input("What days of the week does the miscellaneous period apply? ") # arr of days of the week
     print("The schedule is: ")
-    schedule = generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_starting_times, number_of_lunches, length_of_passing_period, range_of_school_starting_times, range_of_school_ending_times)
+    schedule = generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_starting_times, number_of_lunches, length_of_passing_period, range_of_school_starting_times, range_of_school_ending_times, misc_name, misc_duration, misc_days)
     print(schedule)
     
 def convert_timestamp_to_minutes_after_midnight(timestamp):
     # timestamp is a string in the format XX:XX (24 hour time)
     return timestamp[0:2] * 60 + timestamp[3:5] # minutes after midnight
 
-def generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_starting_times, number_of_lunches, length_of_passing_period, range_of_school_starting_times, range_of_school_ending_times):
+def generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_starting_times, number_of_lunches, length_of_passing_period, range_of_school_starting_times, range_of_school_ending_times, misc_name, misc_duration, misc_days):
     return 0
 
 if __name__ == "__main__":
