@@ -43,5 +43,3 @@ def generate_schedule(number_of_periods_per_day, length_of_individual_period, le
 if __name__ == "__main__":
     main()
 
-print("im cool")
-
