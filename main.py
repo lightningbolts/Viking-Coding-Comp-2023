@@ -81,7 +81,7 @@ class Slot:
         self.end_time = end_time
 
     def __str__(self):
-        return self.name + ": " + self.start_time + " to " + self.end_time
+        return self.name + ": " + self.start_time + " - " + self.end_time
 
 
 def display_schedule(schedule):
