@@ -78,13 +78,13 @@ def main():
     print("Bell Schedule Generator")
     print("=" * 20)
 
-    numPeriods = intInput("How many periods are there? ")
-    startTime = timestampInput("When does school start? (24-hour time) ")
-    latestEndTime = timestampInput("When should school end, at the latest? (24-hour time) ")
-    passLen = intInput("How long is each passing period? (minutes) ")
-    lunchLen = intInput("How long is lunch? (minutes) ")
-    firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
-    numLunches = intInput("How many lunches are there? ")
+    # numPeriods = intInput("How many periods are there? ")
+    # startTime = timestampInput("When does school start? (24-hour time) ")
+    # latestEndTime = timestampInput("When should school end, at the latest? (24-hour time) ")
+    # passLen = intInput("How long is each passing period? (minutes) ")
+    # lunchLen = intInput("How long is lunch? (minutes) ")
+    # firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
+    # numLunches = intInput("How many lunches are there? ")
 
     '''
     Values for testing
@@ -102,6 +102,14 @@ def main():
     '''
     Preliminary calculations
     '''
+    numPeriods = 7
+    lunchLen = 30
+    firstLunchStartTimes = (stringToTimestamp("11:00"),stringToTimestamp("11:00"))
+    numLunches = 2
+    passLen = 5
+    startTime = stringToTimestamp("8:15")
+    latestEndTime = stringToTimestamp("15:15")
+    
     lunchAndPassLen = lunchLen + passLen
     maxDayLen = latestEndTime - startTime
     periodLen = math.floor((maxDayLen - lunchAndPassLen) / numPeriods - passLen)
@@ -148,6 +156,22 @@ def main():
     # Schedule after all of the lunches, also the same for everyone
     for i in range(numPeriodsBeforeLunch + numLunches, numPeriods):
         addClass(i, startTime + lunchAndPassLen + i*periodAndPassLen, periodLen)
+        
+    # Loop through the schedule and check to see if any classes with the same period number and different letter go from the same start time to the same end time
+    # If so, combine them into one class with the same period number
+    # This is done to make the schedule easier to read
+    
+    for i in range(len(schedule)):
+        for j in range(i+1, len(schedule)):
+            try:
+                if schedule[i].periodNumber == schedule[j].periodNumber and schedule[i].startTime == schedule[j].startTime and schedule[i].endTime() == schedule[j].endTime():
+                    schedule[i].name = schedule[i].name[:-3]
+                    schedule.pop(j)
+            except:
+                pass
+    
+    # Sort the schedule by start time
+    schedule.sort(key=lambda slot: slot.startTime)
 
     # Output the schedule
     print()
