@@ -70,11 +70,6 @@ def main():
     print(schedule)
 
 
-def convert_timestamp_to_minutes_after_midnight(timestamp):
-    # timestamp is a string in the format XX:XX (24 hour time)
-    return timestamp[0:2] * 60 + timestamp[3:5] # minutes after midnight
-
-
 def time_stamp_iterator(startTimeStr, endTimeStr, increment):
     # startTimeStr and endTimeStr are strings in the format XX:XX (24 hour time)
     # increment is an int in minutes
@@ -117,7 +112,7 @@ def generate_schedule(number_of_periods_per_day, length_of_individual_period, le
     num_of_minutes_so_far += length_of_break
     result.append(b1)
     for i in range(number_of_periods_per_day - 1):
-        if num_of_minutes_so_far >= convert_timestamp_to_minutes_after_midnight(range_of_lunch_starting_times[0]) - convert_timestamp_to_minutes_after_midnight(school_start_time):
+        if num_of_minutes_so_far >= range_of_lunch_starting_times[0] - school_start_time:
             l1 = Slot("Lunch 1", b1.end_time, b1.end_time + length_of_lunch_block)
             num_of_minutes_so_far += length_of_lunch_block
             result.append(l1)
@@ -125,9 +120,9 @@ def generate_schedule(number_of_periods_per_day, length_of_individual_period, le
                 l2 = Slot("Lunch 2", l1.end_time, l1.end_time + length_of_lunch_block)
                 num_of_minutes_so_far += length_of_lunch_block
                 result.append(l2)
-                if num_of_minutes_so_far >= convert_timestamp_to_minutes_after_midnight(range_of_school_ending_times[0]) - convert_timestamp_to_minutes_after_midnight(school_start_time):
+                if num_of_minutes_so_far >= range_of_school_ending_times[0] - school_start_time:
                     break
-            if num_of_minutes_so_far >= convert_timestamp_to_minutes_after_midnight(range_of_school_ending_times[0]) - convert_timestamp_to_minutes_after_midnight(school_start_time):
+            if num_of_minutes_so_far >= range_of_school_ending_times[0] - school_start_time:
                 break
         p2 = Slot("Period " + str(i + 2), b1.end_time, b1.end_time + length_of_individual_period)
         num_of_minutes_so_far += length_of_individual_period
