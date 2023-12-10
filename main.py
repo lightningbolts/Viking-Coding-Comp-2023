@@ -78,13 +78,13 @@ def main():
     print("Bell Schedule Generator")
     print("=" * 20)
 
-    # numPeriods = intInput("How many periods are there? ")
-    # startTime = timestampInput("When does school start? (24-hour time) ")
-    # latestEndTime = timestampInput("When should school end, at the latest? (24-hour time) ")
-    # passLen = intInput("How long is each passing period? (minutes) ")
-    # lunchLen = intInput("How long is lunch? (minutes) ")
-    # firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
-    # numLunches = intInput("How many lunches are there? ")
+    numPeriods = intInput("How many periods are there? ")
+    startTime = timestampInput("When does school start? (24-hour time) ")
+    latestEndTime = timestampInput("When should school end, at the latest? (24-hour time) ")
+    passLen = intInput("How long is each passing period? (minutes) ")
+    lunchLen = intInput("How long is lunch? (minutes) ")
+    firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
+    numLunches = intInput("How many lunches are there? ")
 
     '''
     Values for testing
@@ -102,13 +102,13 @@ def main():
     '''
     Preliminary calculations
     '''
-    numPeriods = 7
-    lunchLen = 30
-    firstLunchStartTimes = (stringToTimestamp("11:00"),stringToTimestamp("11:00"))
-    numLunches = 2
-    passLen = 5
-    startTime = stringToTimestamp("8:15")
-    latestEndTime = stringToTimestamp("15:15")
+    # numPeriods = 7
+    # lunchLen = 30
+    # firstLunchStartTimes = (stringToTimestamp("11:00"),stringToTimestamp("11:00"))
+    # numLunches = 2
+    # passLen = 5
+    # startTime = stringToTimestamp("8:15")
+    # latestEndTime = stringToTimestamp("15:15")
     
     lunchAndPassLen = lunchLen + passLen
     maxDayLen = latestEndTime - startTime
