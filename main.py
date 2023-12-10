@@ -84,6 +84,10 @@ def time_stamp_iterator(startTimeStr, endTimeStr, increment):
 
 
 class Slot:
+    """
+    Any scheduled event occupying some period of time (e.g. classes, lunch, breaks, passing periods).
+    """
+
     def __init__(self, name, start_time, end_time):
         self.name = name
         self.start_time = start_time
@@ -94,9 +98,8 @@ class Slot:
 
 
 def display_schedule(schedule):
-    # schedule is a list of slots
     for slot in schedule:
-        print("Slot: " + slot.name + ", Start Time: " + slot.start_time + ", End Time: " + slot.end_time)
+        print(slot)
 
 
 def generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_starting_times, number_of_lunches, length_of_passing_period, school_start_time, range_of_school_ending_times, misc_name, misc_duration, misc_days):
