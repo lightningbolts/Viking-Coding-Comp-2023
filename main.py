@@ -51,7 +51,7 @@ def main():
     # range_of_school_ending_times, [min_end_time, max_end_time]
     # misc_name, string
     # misc_duration, int in minutes
-    # misc_days, list of days in the week where misc_duration applies
+    # misc_days, list of days in the week when misc_duration applies
     # Outputs: schedule for the entire week
     number_of_periods_per_day = intInput("How many periods per day? ")
     length_of_individual_period = intInput("How long is each period? ")

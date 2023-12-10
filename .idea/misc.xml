@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Black">
+<<<<<<< HEAD
+    <option name="sdkName" value="Python 3.12" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" project-jdk-name="Python 3.12" project-jdk-type="Python SDK">
+=======
     <option name="sdkName" value="Python 3.10" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" project-jdk-name="Python 3.10" project-jdk-type="Python SDK">
+>>>>>>> f228805e713f0ee744feb9b04db6514cacf67845
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
