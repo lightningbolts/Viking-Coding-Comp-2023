@@ -57,7 +57,7 @@ def main():
     # misc_days, list of days in the week when misc_duration applies
     # Outputs: schedule for the entire week
     number_of_periods_per_day = intInput("How many periods per day? ")
-    length_of_individual_period = intInput("How long is each period? ")
+    length_of_individual_period = 0
     length_of_break = intInput("How long is each break? ")
     length_of_lunch = intInput("How long is lunch? ")
     range_of_lunch_times = rangeInput("When does lunch start? (24-hour time)")
@@ -69,6 +69,7 @@ def main():
     misc_duration = intInput("How long is the miscellaneous period? ")
     misc_days = input("What days of the week does the miscellaneous period apply? ") # arr of days of the week
     print("The schedule is: ")
+    length_of_individual_period = round((range_of_school_ending_times[1] - range_of_school_starting_times[0] - number_of_lunches * length_of_lunch - length_of_break - number_of_periods_per_day * length_of_passing_period) / number_of_periods_per_day)
     schedule = generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_times, number_of_lunches, length_of_passing_period, range_of_school_starting_times, range_of_school_ending_times, misc_name, misc_duration, misc_days)
     print(schedule)
 
@@ -134,6 +135,7 @@ def generate_schedule(number_of_periods_per_day, length_of_individual_period, le
     period4A_start_time = result[-number_of_lunches].end_time + length_of_passing_period
     period4A_end_time = period4A_start_time + length_of_individual_period
     result.append(Slot("Period 4A", period4A_start_time, period4A_end_time))
+    period_number += 1
     # Add periods after 4A and 4B
     time_after_lunch = range_of_school_ending_times[1] - result[-1].end_time
     number_of_periods_after_lunch = math.floor(time_after_lunch / (length_of_individual_period + length_of_passing_period))
