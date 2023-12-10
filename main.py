@@ -114,23 +114,46 @@ def generate_schedule(number_of_periods_per_day, length_of_individual_period, le
         end_time = start_time + length_of_individual_period
         result.append(Slot("Period " + str(period_number + 1), start_time, end_time))
         period_number += 1
-        
-    # Add lunch
-    for i in range(number_of_lunches):
-        start_time = range_of_lunch_times[0] + i * (length_of_lunch + length_of_passing_period)
-        end_time = start_time + length_of_lunch
-        result.append(Slot("Lunch " + str(i + 1), start_time, end_time))
-    
-    # Add periods after lunch
+    # Add break
+    break_start_time = result[-1].end_time + length_of_passing_period
+    break_end_time = break_start_time + length_of_break
+    result.append(Slot("Break", break_start_time, break_end_time))
+    # Add period 4B
+    period4B_start_time = result[-1].end_time + length_of_passing_period
+    period4B_end_time = period4B_start_time + length_of_individual_period
+    result.append(Slot("Period 4B", period4B_start_time, period4B_end_time))
+    # Add lunch A
+    lunchA_start_time = result[-2].end_time + length_of_passing_period
+    lunchA_end_time = lunchA_start_time + length_of_lunch
+    result.append(Slot("Lunch A", lunchA_start_time, lunchA_end_time))
+    # Add lunch B
+    lunchB_start_time = period4B_end_time + length_of_passing_period
+    lunchB_end_time = lunchB_start_time + length_of_lunch
+    result.append(Slot("Lunch B", lunchB_start_time, lunchB_end_time))
+    # Add period 4A
+    period4A_start_time = result[-number_of_lunches].end_time + length_of_passing_period
+    period4A_end_time = period4A_start_time + length_of_individual_period
+    result.append(Slot("Period 4A", period4A_start_time, period4A_end_time))
+    # Add periods after 4A and 4B
+    time_after_lunch = range_of_school_ending_times[1] - result[-1].end_time
+    number_of_periods_after_lunch = math.floor(time_after_lunch / (length_of_individual_period + length_of_passing_period))
     for i in range(number_of_periods_after_lunch):
-        start_time = range_of_lunch_times[1] + i * (length_of_individual_period + length_of_passing_period)
+        start_time = result[-1].end_time + length_of_passing_period
         end_time = start_time + length_of_individual_period
         result.append(Slot("Period " + str(period_number + 1), start_time, end_time))
         period_number += 1
+    # # Add periods after lunch
+    # time_after_lunch = range_of_school_ending_times[1] - result[-1].end_time
+    # number_of_periods_after_lunch = math.floor(time_after_lunch / (length_of_individual_period + length_of_passing_period))
+    # for i in range(number_of_periods_after_lunch):
+    #     start_time = result[-1].end_time + length_of_passing_period
+    #     end_time = start_time + length_of_individual_period
+    #     result.append(Slot("Period " + str(period_number + 1), start_time, end_time))
+    #     period_number += 1
 
     return display_schedule(result)
 
 
 if __name__ == "__main__":
     # main()
-    print(generate_schedule(7, 50, 10, 30, (660, 780), 2, 5, (480, 540), (900, 930), "Misc", 30, ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]))
+    print(generate_schedule(7, 50, 10, 30, (720, 780), 2, 5, (480, 540), (915, 930), "Misc", 30, ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]))
