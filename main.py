@@ -70,16 +70,6 @@ def main():
     print(schedule)
 
 
-def time_stamp_iterator(startTime, endTime, increment):
-    # increment is an int in minutes
-    # returns a list of timestamps in the format XX:XX (24 hour time)
-    timestamps = []
-    while startTime < endTime:
-        timestamps.append(startTime)
-        startTime += increment
-    return timestamps
-
-
 class Slot:
     """
     Any scheduled event occupying some period of time (e.g. classes, lunch, breaks, passing periods).
