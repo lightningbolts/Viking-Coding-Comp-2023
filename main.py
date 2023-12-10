@@ -33,7 +33,7 @@ def rangeInput(prompt):
     print(prompt)
     start = timestampInput("\tEarliest acceptable time: ")
     end = timestampInput("\tLatest acceptable time: ")
-    return (start, end)
+    return tuple([start, end])
 
 
 def main():
@@ -66,24 +66,27 @@ def main():
     misc_duration = intInput("How long is the miscellaneous period? ")
     misc_days = input("What days of the week does the miscellaneous period apply? ") # arr of days of the week
     print("The schedule is: ")
-    schedule = generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_starting_times, number_of_lunches, length_of_passing_period, school_start_time, range_of_school_ending_times, misc_name, misc_duration, misc_days)
+    schedule = generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_starting_times, number_of_lunches, length_of_passing_period, range_of_school_starting_times, range_of_school_ending_times, misc_name, misc_duration, misc_days)
     print(schedule)
-    
+
+
 def convert_timestamp_to_minutes_after_midnight(timestamp):
     # timestamp is a string in the format XX:XX (24 hour time)
     return timestamp[0:2] * 60 + timestamp[3:5] # minutes after midnight
 
-def time_stamp_iterator(start_time, end_time, increment):
-    # start_time and end_time are strings in the format XX:XX (24 hour time)
+
+def time_stamp_iterator(startTimeStr, endTimeStr, increment):
+    # startTimeStr and endTimeStr are strings in the format XX:XX (24 hour time)
     # increment is an int in minutes
     # returns a list of timestamps in the format XX:XX (24 hour time)
-    start_time = convert_timestamp_to_minutes_after_midnight(start_time)
-    end_time = convert_timestamp_to_minutes_after_midnight(end_time)
+    startTime = stringToTimestamp(startTimeStr)
+    endTime = stringToTimestamp(endTimeStr)
     timestamps = []
-    while start_time < end_time:
-        timestamps.append(start_time)
-        start_time += increment
+    while startTime < endTime:
+        timestamps.append(startTime)
+        startTime += increment
     return timestamps
+
 
 class Slot:
     def __init__(self, name, start_time, end_time):
@@ -94,10 +97,12 @@ class Slot:
     def __str__(self):
         return self.name + ": " + self.start_time + " to " + self.end_time
 
+
 def display_schedule(schedule):
     # schedule is a list of slots
     for slot in schedule:
         print("Slot: " + slot.name + ", Start Time: " + slot.start_time + ", End Time: " + slot.end_time)
+
 
 def generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_starting_times, number_of_lunches, length_of_passing_period, school_start_time, range_of_school_ending_times, misc_name, misc_duration, misc_days):
     # Period 1: start_time_of_school to start_time_of_school + length_of_individual_period
@@ -131,6 +136,7 @@ def generate_schedule(number_of_periods_per_day, length_of_individual_period, le
         num_of_minutes_so_far += length_of_passing_period
         result.append(pass1)
     return display_schedule(result)
+
 
 if __name__ == "__main__":
     main()
