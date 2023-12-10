@@ -2,7 +2,7 @@ import math
 
 
 def timestampToString(timestamp):
-    return f"${timestamp / 60}:{timestamp % 60}"
+    return f"{math.floor(timestamp / 60)}:{str(timestamp % 60).zfill(2)}"
 
 
 def stringToTimestamp(timeString):
