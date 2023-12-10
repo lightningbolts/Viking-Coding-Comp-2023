@@ -73,11 +73,11 @@ def main():
     print(schedule)
 
 
-def convert_timestamp_to_minutes_after_midnight(timestamp):
-    # timestamp is a string in the format XX:XX (24 hour time)
-    return timestamp[0:2] * 60 + timestamp[3:5] # minutes after midnight
-
 class Slot:
+    """
+    Any scheduled event occupying some period of time (e.g. classes, lunch, breaks, passing periods).
+    """
+
     def __init__(self, name, start_time, end_time):
         self.name = name
         self.start_time = start_time
@@ -88,9 +88,8 @@ class Slot:
 
 
 def display_schedule(schedule):
-    # schedule is a list of slots
     for slot in schedule:
-        print("Slot: " + slot.name + ", Start Time: " + slot.start_time + ", End Time: " + slot.end_time)
+        print(slot)
 
 
 def generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_times, number_of_lunches, length_of_passing_period, range_of_school_starting_times, range_of_school_ending_times, misc_name, misc_duration, misc_days):
