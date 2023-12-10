@@ -108,20 +108,20 @@ def generate_schedule(number_of_periods_per_day, length_of_individual_period, le
         return
     # Add periods before lunch
     for i in range(number_of_periods_before_lunch):
-        start_time = timestampToString(range_of_school_starting_times[0] + i * (length_of_individual_period + length_of_passing_period))
-        end_time = timestampToString(start_time + length_of_individual_period)
+        start_time = range_of_school_starting_times[0] + i * (length_of_individual_period + length_of_passing_period)
+        end_time = start_time + length_of_individual_period
         result.append(Slot("Period " + str(i + 1), start_time, end_time))
         
     # Add lunch
     for i in range(number_of_lunches):
-        start_time = timestampToString(range_of_lunch_times[0] + i * (length_of_lunch + length_of_passing_period))
-        end_time = timestampToString(start_time + length_of_lunch)
+        start_time = range_of_lunch_times[0] + i * (length_of_lunch + length_of_passing_period)
+        end_time = start_time + length_of_lunch
         result.append(Slot("Lunch " + str(i + 1), start_time, end_time))
     
     # Add periods after lunch
     for i in range(number_of_periods_after_lunch):
-        start_time = timestampToString(range_of_lunch_times[1] + i * (length_of_individual_period + length_of_passing_period))
-        end_time = timestampToString(start_time + length_of_individual_period)
+        start_time = range_of_lunch_times[1] + i * (length_of_individual_period + length_of_passing_period)
+        end_time = start_time + length_of_individual_period
         result.append(Slot("Period " + str(i + 1), start_time, end_time))
 
     return display_schedule(result)
