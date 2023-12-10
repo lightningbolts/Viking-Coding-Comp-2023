@@ -13,17 +13,21 @@ def main():
     # range_of_school_ending_times, [min_end_time, max_end_time]
     # misc_name, string
     # misc_duration, int in minutes
-    # misc_days, list of days in the week where misc_duration applies
+    # misc_days, list of days in the week when misc_duration applies
     # Outputs: schedule for the entire week
     number_of_periods_per_day = int(input("How many periods per day? "))
     length_of_individual_period = int(input("How long is each period? "))
     length_of_break = int(input("How long is each break? "))
     length_of_lunch = int(input("How long is lunch? "))
-    range_of_lunch_starting_times = input("What is the range of lunch starting times? ") # tuple: (min_start_time, max_start_time)
+    lunch_start_time = input("What is the lunch starting time? ")
+    lunch_end_time = input("What is the lunch ending time? ")
+    range_of_lunch_starting_times = [lunch_start_time, lunch_end_time]
     number_of_lunches = int(input("How many lunches are there? "))
     length_of_passing_period = int(input("How long is each passing period? "))
     school_start_time = input("What is the school starting times? ")
-    range_of_school_ending_times = input("What is the range of school ending times? ") # tuple: (min_end_time, max_end_time)
+    school_end_time_min = input("What is the earliest school ending time? ")
+    school_end_time_max = input("What is the latest school ending time? ")
+    range_of_school_ending_times = [school_end_time_min, school_end_time_max]
     misc_name = input("What is the name of the miscellaneous period? ")
     misc_duration = int(input("How long is the miscellaneous period? "))
     misc_days = input("What days of the week does the miscellaneous period apply? ") # arr of days of the week
