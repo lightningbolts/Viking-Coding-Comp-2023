@@ -2,7 +2,7 @@ import math
 
 
 def timestampToString(timestamp):
-    return f"${timestamp / 60}:{timestamp % 60}"
+    return f"{math.floor(timestamp / 60)}:{timestamp % 60}"
 
 
 def stringToTimestamp(timeString):
@@ -84,16 +84,18 @@ class Slot:
         self.end_time = end_time
 
     def __str__(self):
-        return self.name + ": " + self.start_time + " - " + self.end_time
+        return self.name + ": " + str(self.start_time) + " - " + str(self.end_time)
 
 
 def display_schedule(schedule):
     for slot in schedule:
-        print(slot)
+        print(slot.name + ": " + timestampToString(slot.start_time) + " - " + timestampToString(slot.end_time))
+    return "Done"
 
 
 def generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_times, number_of_lunches, length_of_passing_period, range_of_school_starting_times, range_of_school_ending_times, misc_name, misc_duration, misc_days):
     result = []
+    period_number = 0
     # Get the amount of time between the start of the school day and the start of lunch
     time_until_lunch = range_of_lunch_times[0] - range_of_school_starting_times[0]
     number_of_periods_before_lunch = math.floor(time_until_lunch / (length_of_individual_period + length_of_passing_period))
@@ -110,7 +112,8 @@ def generate_schedule(number_of_periods_per_day, length_of_individual_period, le
     for i in range(number_of_periods_before_lunch):
         start_time = range_of_school_starting_times[0] + i * (length_of_individual_period + length_of_passing_period)
         end_time = start_time + length_of_individual_period
-        result.append(Slot("Period " + str(i + 1), start_time, end_time))
+        result.append(Slot("Period " + str(period_number + 1), start_time, end_time))
+        period_number += 1
         
     # Add lunch
     for i in range(number_of_lunches):
@@ -122,11 +125,12 @@ def generate_schedule(number_of_periods_per_day, length_of_individual_period, le
     for i in range(number_of_periods_after_lunch):
         start_time = range_of_lunch_times[1] + i * (length_of_individual_period + length_of_passing_period)
         end_time = start_time + length_of_individual_period
-        result.append(Slot("Period " + str(i + 1), start_time, end_time))
+        result.append(Slot("Period " + str(period_number + 1), start_time, end_time))
+        period_number += 1
 
     return display_schedule(result)
 
 
 if __name__ == "__main__":
     # main()
-    print(generate_schedule(7, 50, 10, 30, (660, 780), 2, 5, (480, 540), (1020, 1080), "Misc", 30, ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]))
+    print(generate_schedule(7, 50, 10, 30, (660, 780), 2, 5, (480, 540), (900, 930), "Misc", 30, ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]))
