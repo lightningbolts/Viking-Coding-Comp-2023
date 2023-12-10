@@ -46,6 +46,14 @@ def rangeInput(prompt):
 def letter(n):
     return chr(ord('A') + n)
 
+def verifyLunch(input, startTime, endTime):
+    if(input[0] < startTime or input[-1] < endTime ):
+        print("Please make sure lunch starts after school starts or before school ends. ")
+        return False
+    else:
+        return True
+
+
 
 class Slot:
     """
@@ -84,6 +92,9 @@ def main():
     passLen = intInput("How long is each passing period? (minutes) ")
     lunchLen = intInput("How long is lunch? (minutes) ")
     firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
+    verifyLunch(firstLunchStartTimes, startTime, latestEndTime)
+    if(verifyLunch != True):
+        firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
     numLunches = intInput("How many lunches are there? ")
 
     '''
@@ -112,10 +123,10 @@ def main():
     
     lunchAndPassLen = lunchLen + passLen
     maxDayLen = latestEndTime - startTime
-    periodLen = math.floor((maxDayLen - lunchAndPassLen) / numPeriods - passLen)
+    periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
     periodAndPassLen = periodLen + passLen
     numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
-    firstLunchStartTime = startTime + numPeriodsBeforeLunch * periodAndPassLen
+    firstLunchStartTime = startTime + (numPeriodsBeforeLunch * periodAndPassLen)
 
     '''
     Errors
@@ -126,6 +137,9 @@ def main():
     if firstLunchStartTime < firstLunchStartTimes[0]:
         print("Error: It is not possible to fit all lunches and have first lunch in the specified timeframe.")
         return
+    #if firstLunchStartTimes[0] < startTime or firstLunchStartTimes[-1] > latestEndTime:
+       # print("Error: Lunch must start before or after school.")
+        #return
 
     # The full schedule to be outputted.
     schedule = []
