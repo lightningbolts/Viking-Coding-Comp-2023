@@ -70,12 +70,9 @@ def main():
     print(schedule)
 
 
-def time_stamp_iterator(startTimeStr, endTimeStr, increment):
-    # startTimeStr and endTimeStr are strings in the format XX:XX (24 hour time)
+def time_stamp_iterator(startTime, endTime, increment):
     # increment is an int in minutes
     # returns a list of timestamps in the format XX:XX (24 hour time)
-    startTime = stringToTimestamp(startTimeStr)
-    endTime = stringToTimestamp(endTimeStr)
     timestamps = []
     while startTime < endTime:
         timestamps.append(startTime)
