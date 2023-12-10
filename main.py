@@ -1,3 +1,41 @@
+def timestampToString(timestamp):
+    return f"${timestamp / 60}:{timestamp % 60}"
+
+
+def stringToTimestamp(timeString):
+    (hours, minutes) = timeString.split(":")
+    return int(hours) * 60 + int(minutes)
+
+
+def intInput(prompt):
+    while True:
+        try:
+            return int(input(prompt))
+        except ValueError:
+            print("Invalid response. Please enter a number.")
+
+
+def timestampInput(prompt):
+    """
+    Accepts a time in HH:MM format, 24-hour time.
+    :param prompt:
+    :return: The time inputted by the user as an integer
+    """
+
+    while True:
+        try:
+            return stringToTimestamp(input(prompt))
+        except ValueError:
+            print("Invalid response. Please enter a 24-hour time in HH:MM format.")
+
+
+def rangeInput(prompt):
+    print(prompt)
+    start = timestampInput("\tEarliest acceptable time: ")
+    end = timestampInput("\tLatest acceptable time: ")
+    return (start, end)
+
+
 def main():
     # Introduction: how to use the console application
     # Guidelines
@@ -15,17 +53,17 @@ def main():
     # misc_duration, int in minutes
     # misc_days, list of days in the week where misc_duration applies
     # Outputs: schedule for the entire week
-    number_of_periods_per_day = int(input("How many periods per day? "))
-    length_of_individual_period = int(input("How long is each period? "))
-    length_of_break = int(input("How long is each break? "))
-    length_of_lunch = int(input("How long is lunch? "))
-    range_of_lunch_starting_times = input("What is the range of lunch starting times? ") # arr of different times XX:XX
-    number_of_lunches = int(input("How many lunches are there? "))
-    length_of_passing_period = int(input("How long is each passing period? "))
-    range_of_school_starting_times = input("What is the range of school starting times? ") # arr of different times XX:XX
-    range_of_school_ending_times = input("What is the range of school ending times? ") # arr of different times XX:XX
+    number_of_periods_per_day = intInput("How many periods per day? ")
+    length_of_individual_period = intInput("How long is each period? ")
+    length_of_break = intInput("How long is each break? ")
+    length_of_lunch = intInput("How long is lunch? ")
+    range_of_lunch_starting_times = rangeInput("When does lunch start? ")
+    number_of_lunches = intInput("How many lunches are there? ")
+    length_of_passing_period = intInput("How long is each passing period? ")
+    range_of_school_starting_times = rangeInput("When does school start? ")
+    range_of_school_ending_times = rangeInput("What does school end? ")
     misc_name = input("What is the name of the miscellaneous period? ")
-    misc_duration = int(input("How long is the miscellaneous period? "))
+    misc_duration = intInput("How long is the miscellaneous period? ")
     misc_days = input("What days of the week does the miscellaneous period apply? ") # arr of days of the week
     print("The schedule is: ")
     schedule = generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_starting_times, number_of_lunches, length_of_passing_period, range_of_school_starting_times, range_of_school_ending_times, misc_name, misc_duration, misc_days)
