@@ -60,11 +60,11 @@ def main():
     length_of_individual_period = intInput("How long is each period? ")
     length_of_break = intInput("How long is each break? ")
     length_of_lunch = intInput("How long is lunch? ")
-    range_of_lunch_times = rangeInput("When does lunch start? ")
+    range_of_lunch_times = rangeInput("When does lunch start? (24-hour time)")
     number_of_lunches = intInput("How many lunches are there? ")
     length_of_passing_period = intInput("How long is each passing period? ")
-    range_of_school_starting_times = rangeInput("When does school start? ")
-    range_of_school_ending_times = rangeInput("What does school end? ")
+    range_of_school_starting_times = rangeInput("When does school start? (24-hour time) ")
+    range_of_school_ending_times = rangeInput("What does school end? (24-hour time) ")
     misc_name = input("What is the name of the miscellaneous period? ")
     misc_duration = intInput("How long is the miscellaneous period? ")
     misc_days = input("What days of the week does the miscellaneous period apply? ") # arr of days of the week
@@ -84,7 +84,7 @@ class Slot:
         self.end_time = end_time
 
     def __str__(self):
-        return self.name + ": " + self.start_time + " to " + self.end_time
+        return self.name + ": " + self.start_time + " - " + self.end_time
 
 
 def display_schedule(schedule):
