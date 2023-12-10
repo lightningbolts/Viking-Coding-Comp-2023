@@ -95,7 +95,7 @@ def display_schedule(schedule):
 def generate_schedule(number_of_periods_per_day, length_of_individual_period, length_of_break, length_of_lunch, range_of_lunch_times, number_of_lunches, length_of_passing_period, range_of_school_starting_times, range_of_school_ending_times, misc_name, misc_duration, misc_days):
     result = []
     # Get the amount of time between the start of the school day and the start of lunch
-    time_until_lunch = range_of_lunch_times[0] - range_of_lunch_times[0]
+    time_until_lunch = range_of_lunch_times[0] - range_of_school_starting_times[0]
     number_of_periods_before_lunch = math.floor(time_until_lunch / (length_of_individual_period + length_of_passing_period))
     if number_of_periods_before_lunch < 1:
         print("Error: not enough time before lunch to fit all periods")
@@ -128,4 +128,5 @@ def generate_schedule(number_of_periods_per_day, length_of_individual_period, le
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    print(generate_schedule(7, 50, 10, 30, (660, 780), 2, 5, (480, 540), (1020, 1080), "Misc", 30, ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]))
