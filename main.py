@@ -155,5 +155,5 @@ def generate_schedule(number_of_periods_per_day, length_of_individual_period, le
 
 
 if __name__ == "__main__":
-    # main()
-    print(generate_schedule(7, 50, 10, 30, (720, 780), 2, 5, (480, 540), (915, 930), "Misc", 30, ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]))
+    main()
+    # print(generate_schedule(7, 50, 10, 30, (620, 680), 2, 5, (480, 540), (915, 930), "Misc", 30, ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]))
