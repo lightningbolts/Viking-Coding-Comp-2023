@@ -92,8 +92,8 @@ def main():
     passLen = intInput("How long is each passing period? (minutes) ")
     lunchLen = intInput("How long is lunch? (minutes) ")
     firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
-    verifyLunch(firstLunchStartTimes, startTime, latestEndTime)
-    if(verifyLunch != True):
+    realLunch = verifyLunch(firstLunchStartTimes, startTime, latestEndTime)
+    if(realLunch != True):
         firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
     numLunches = intInput("How many lunches are there? ")
 
