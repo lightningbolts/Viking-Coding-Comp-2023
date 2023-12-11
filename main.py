@@ -97,7 +97,7 @@ def main():
     lunchLen = intInput("How long is lunch? (minutes) ")
     while True:
         firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
-        if firstLunchStartTimes[0] < startTime or firstLunchStartTimes[-1] < latestEndTime:
+        if firstLunchStartTimes[0] < startTime or firstLunchStartTimes[-1] > latestEndTime:
             print("Please make sure lunch starts after school starts or before school ends. ")
         break
     numLunches = intInput("How many lunches are there? ")
