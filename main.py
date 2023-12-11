@@ -185,13 +185,4 @@ def printSchedule(periodLen, schedule):
 
 if __name__ == "__main__":
     # main()
-    printSchedule(*scheduler(7, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
-              (stringToTimestamp("11:00"), stringToTimestamp("11:00")), 2))
-    printSchedule(*scheduler(7, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
-              (stringToTimestamp("11:00"), stringToTimestamp("11:00")), 1))
-    printSchedule(*scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
-              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 2))
-    printSchedule(*scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
-              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 1))
-    printSchedule(*scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
-              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 3))
+    main()
