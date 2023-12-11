@@ -135,7 +135,6 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     '''
     numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[0] - startTime) / periodAndPassLen)
     firstLunchStartTime = startTime + (numPeriodsBeforeLunch * periodAndPassLen)
-    print(firstLunchStartTime, periodLen)
     if firstLunchStartTime < firstLunchStartTimes[0]:
         while firstLunchStartTime < firstLunchStartTimes[0]:
             numPeriodsBeforeLunch += 1
