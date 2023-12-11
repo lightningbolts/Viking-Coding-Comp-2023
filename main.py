@@ -125,6 +125,9 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     periodAndPassLen = periodLen + passLen
     schedule = []
 
+    if periodLen <= 0:
+        raise InvalidSchedule
+
     '''
     First lunch start time calculations
     '''
@@ -138,7 +141,7 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
         if firstLunchStartTime > firstLunchStartTimes[1]:
             raise InvalidSchedule
 
-    if periodLen < 0 or firstLunchStartTime < firstLunchStartTimes[0]:
+    if firstLunchStartTime < firstLunchStartTimes[0]:
         raise InvalidSchedule
 
     def addSlot(*args):
