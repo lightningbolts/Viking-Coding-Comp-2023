@@ -105,7 +105,7 @@ def main():
     try:
         printSchedule(*scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches))
     except InvalidSchedule:
-        print()
+        print("Error: There is no valid schedule under the conditions you specified.")
 
 
 def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches):
@@ -124,15 +124,23 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     maxDayLen = latestEndTime - startTime
     periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
     periodAndPassLen = periodLen + passLen
-    numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
-    firstLunchStartTime = startTime + (numPeriodsBeforeLunch * periodAndPassLen)
     schedule = []
 
-    if periodLen < 0:
-        print("Error: There is not enough time in the school day to fit all periods and lunch.")
-        raise InvalidSchedule
+    '''
+    First lunch start time calculations
+    '''
+    numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[0] - startTime) / periodAndPassLen)
+    firstLunchStartTime = startTime + (numPeriodsBeforeLunch * periodAndPassLen)
+    print(firstLunchStartTime, periodLen)
     if firstLunchStartTime < firstLunchStartTimes[0]:
-        print("Error: It is not possible to fit all lunches and have first lunch in the specified timeframe.")
+        while firstLunchStartTime < firstLunchStartTimes[0]:
+            print("test")
+            numPeriodsBeforeLunch += 1
+            firstLunchStartTime += periodAndPassLen
+        if firstLunchStartTime > firstLunchStartTimes[1]:
+            raise InvalidSchedule
+
+    if periodLen < 0 or firstLunchStartTime < firstLunchStartTimes[0]:
         raise InvalidSchedule
 
     def addSlot(*args):
