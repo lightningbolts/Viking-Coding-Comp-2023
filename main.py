@@ -213,3 +213,11 @@ if __name__ == "__main__":
     # main()
     scheduler(7, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
               (stringToTimestamp("11:00"), stringToTimestamp("11:00")), 2)
+    scheduler(7, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
+              (stringToTimestamp("11:00"), stringToTimestamp("11:00")), 1)
+    scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
+              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 2)
+    scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
+              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 1)
+    scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
+              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 3)
