@@ -140,11 +140,8 @@ def main():
         print("There must be at least 1 period.")
         return
     periodAndPassLen = periodLen + passLen
-    try:
-        numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
-    except:
-        print("Passing period length must be more than 0 minutes.")
-        return
+    numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
+
     firstLunchStartTime = startTime + (numPeriodsBeforeLunch * periodAndPassLen)
 
     '''
@@ -156,9 +153,7 @@ def main():
     if firstLunchStartTime < firstLunchStartTimes[0]:
         print("Error: It is not possible to fit all lunches and have first lunch in the specified timeframe.")
         return
-    #if firstLunchStartTimes[0] < startTime or firstLunchStartTimes[-1] > latestEndTime:
-       # print("Error: Lunch must start before or after school.")
-        #return
+
 
     # The full schedule to be outputted.
     schedule = []
@@ -176,15 +171,18 @@ def main():
     # Schedules for each of the different lunches
     for lunchNum in range(numLunches):
         currTime = startTime + numPeriodsBeforeLunch * periodAndPassLen
+        if range(numLunches) == 1:
+            lunchNum = ""
+            break
+        else:
+            for periodNum in range(numPeriodsBeforeLunch, numPeriodsBeforeLunch + numLunches):
+                # If time for lunch
+                if periodNum - numPeriodsBeforeLunch == lunchNum:
+                    addSlot(f"Lunch", currTime, lunchLen, lunchNum)
+                    currTime += lunchAndPassLen
 
-        for periodNum in range(numPeriodsBeforeLunch, numPeriodsBeforeLunch + numLunches):
-            # If time for lunch
-            if periodNum - numPeriodsBeforeLunch == lunchNum:
-                addSlot(f"Lunch", currTime, lunchLen, lunchNum)
-                currTime += lunchAndPassLen
-
-            addClass(periodNum, currTime, periodLen, lunchNum)
-            currTime += periodAndPassLen
+                addClass(periodNum, currTime, periodLen, lunchNum)
+                currTime += periodAndPassLen
 
     # Schedule after all of the lunches, also the same for everyone
     for i in range(numPeriodsBeforeLunch + numLunches, numPeriods):
