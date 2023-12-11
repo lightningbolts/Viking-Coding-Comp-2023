@@ -123,7 +123,11 @@ def main():
     
     lunchAndPassLen = lunchLen + passLen
     maxDayLen = latestEndTime - startTime
-    periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
+    try:
+        periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
+    except:
+        print("There must be at least 1 period.")
+        return
     periodAndPassLen = periodLen + passLen
     numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
     firstLunchStartTime = startTime + (numPeriodsBeforeLunch * periodAndPassLen)
