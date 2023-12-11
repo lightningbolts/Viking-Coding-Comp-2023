@@ -57,14 +57,6 @@ def rangeInput(prompt):
 def letter(n):
     return chr(ord('A') + n)
 
-def verifyLunch(input, startTime, endTime):
-    if(input[0] < startTime or input[-1] > endTime ):
-        print("Please make sure lunch starts after school starts or before school ends. ")
-        return False
-    else:
-        return True
-
-
 
 class Slot:
     """
@@ -84,14 +76,11 @@ class Slot:
         return self.name + ": " + timestampToString(self.startTime) + " - " + timestampToString(self.endTime())
 
 
-class Lunch(Slot):
-    pass
-
-
 class ClassPeriod(Slot):
     def __init__(self, periodNumber, startTime, length, lunchNum = None):
         self.periodNumber = periodNumber
         Slot.__init__(self, f"Period {periodNumber + 1}", startTime, length, lunchNum)
+
 
 def main():
     print("Bell Schedule Generator")
@@ -102,45 +91,34 @@ def main():
     latestEndTime = timestampInput("When should school end, at the latest? (24-hour time) ")
     passLen = intInput("How long is each passing period? (minutes) ")
     lunchLen = intInput("How long is lunch? (minutes) ")
-    firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
-    realLunch = verifyLunch(firstLunchStartTimes, startTime, latestEndTime)
-    if(realLunch != True):
+    while True:
         firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
+        if firstLunchStartTimes[0] < startTime or firstLunchStartTimes[-1] < latestEndTime:
+            print("Please make sure lunch starts after school starts or before school ends. ")
+        break
     numLunches = intInput("How many lunches are there? ")
+
+    printSchedule(*scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches))
 
 
 def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches):
-    '''
-    Values for testing
-    '''
-    '''
-    numPeriods = 10
-    lunchLen = 30
-    firstLunchStartTimes = (stringToTimestamp("11:00"),stringToTimestamp("11:30"))
-    numLunches = 2
-    passLen = 5
-    startTime = stringToTimestamp("8:15")
-    latestEndTime = stringToTimestamp("15:15")
-    '''
+    """
+    :param numPeriods:
+    :param startTime:
+    :param latestEndTime:
+    :param passLen:
+    :param lunchLen:
+    :param firstLunchStartTimes:
+    :param numLunches:
+    :return:
+    """
 
     '''
     Preliminary calculations
     '''
-    # numPeriods = 7
-    # lunchLen = 30
-    # firstLunchStartTimes = (stringToTimestamp("11:00"),stringToTimestamp("11:00"))
-    # numLunches = 2
-    # passLen = 5
-    # startTime = stringToTimestamp("8:15")
-    # latestEndTime = stringToTimestamp("15:15")
-
     lunchAndPassLen = lunchLen + passLen
     maxDayLen = latestEndTime - startTime
-    try:
-        periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
-    except:
-        print("There must be at least 1 period.")
-        return
+    periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
     periodAndPassLen = periodLen + passLen
     numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
 
@@ -155,7 +133,6 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     if firstLunchStartTime < firstLunchStartTimes[0]:
         print("Error: It is not possible to fit all lunches and have first lunch in the specified timeframe.")
         return
-
 
     # The full schedule to be outputted.
     schedule = []
@@ -173,31 +150,27 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     # Schedules for each of the different lunches
     for lunchNum in range(numLunches):
         currTime = startTime + numPeriodsBeforeLunch * periodAndPassLen
-        if range(numLunches) == 1:
-            lunchNum = ""
-            break
-        else:
-            for periodNum in range(numPeriodsBeforeLunch, numPeriodsBeforeLunch + numLunches):
-                # If time for lunch
-                if periodNum - numPeriodsBeforeLunch == lunchNum:
-                    addSlot(f"Lunch", currTime, lunchLen, lunchNum)
-                    currTime += lunchAndPassLen
+        effectiveLunchNum = None if numLunches == 1 else lunchNum
+        for periodNum in range(numPeriodsBeforeLunch, numPeriodsBeforeLunch + numLunches - 1):
+            # If time for lunch
+            if periodNum - numPeriodsBeforeLunch == lunchNum:
+                addSlot(f"Lunch", currTime, lunchLen, effectiveLunchNum)
+                currTime += lunchAndPassLen
 
-                addClass(periodNum, currTime, periodLen, lunchNum)
-                currTime += periodAndPassLen
+            addClass(periodNum, currTime, periodLen, effectiveLunchNum)
+            currTime += periodAndPassLen
 
-    # Schedule after all of the lunches, also the same for everyone
-    for i in range(numPeriodsBeforeLunch + numLunches, numPeriods):
+    # Schedule after all the lunches, also the same for everyone
+    for i in range(numPeriodsBeforeLunch + numLunches - 1, numPeriods):
         addClass(i, startTime + lunchAndPassLen + i*periodAndPassLen, periodLen)
 
-    # Loop through the schedule and check to see if any classes with the same period number and different letter go from the same start time to the same end time
-    # If so, combine them into one class with the same period number
-    # This is done to make the schedule easier to read
-
-    # Sort the schedule by start time
     schedule.sort(key=lambda slot: slot.startTime)
 
-    # Output the schedule
+    # Sort the schedule by start time
+    return (periodLen, schedule)
+
+
+def printSchedule(periodLen, schedule):
     print()
     print("Schedule")
     print("="*20)
@@ -211,13 +184,13 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
 
 if __name__ == "__main__":
     # main()
-    scheduler(7, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
-              (stringToTimestamp("11:00"), stringToTimestamp("11:00")), 2)
-    scheduler(7, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
-              (stringToTimestamp("11:00"), stringToTimestamp("11:00")), 1)
-    scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
-              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 2)
-    scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
-              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 1)
-    scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
-              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 3)
+    printSchedule(*scheduler(7, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
+              (stringToTimestamp("11:00"), stringToTimestamp("11:00")), 2))
+    printSchedule(*scheduler(7, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
+              (stringToTimestamp("11:00"), stringToTimestamp("11:00")), 1))
+    printSchedule(*scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
+              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 2))
+    printSchedule(*scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
+              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 1))
+    printSchedule(*scheduler(6, stringToTimestamp("8:15"), stringToTimestamp("15:15"), 5, 30,
+              (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 3))
