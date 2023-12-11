@@ -120,29 +120,20 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     :return:
     """
 
-    '''
-    Preliminary calculations
-    '''
     lunchAndPassLen = lunchLen + passLen
     maxDayLen = latestEndTime - startTime
     periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
     periodAndPassLen = periodLen + passLen
     numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
-
     firstLunchStartTime = startTime + (numPeriodsBeforeLunch * periodAndPassLen)
+    schedule = []
 
-    '''
-    Errors
-    '''
     if periodLen < 0:
         print("Error: There is not enough time in the school day to fit all periods and lunch.")
         raise InvalidSchedule
     if firstLunchStartTime < firstLunchStartTimes[0]:
         print("Error: It is not possible to fit all lunches and have first lunch in the specified timeframe.")
         raise InvalidSchedule
-
-    # The full schedule to be outputted.
-    schedule = []
 
     def addSlot(*args):
         schedule.append(Slot(*args))
@@ -185,8 +176,6 @@ def printSchedule(periodLen, schedule):
     print(f"Classes are {periodLen} minutes long")
     print('| {:^20} | {:^5} | {:^5} |'.format("NAME", "START", "END"))
     for slot in schedule:
-        if slot.lunchNum is not None:
-            pass
         print('| {:^20} | {:>5} | {:>5} |'.format(slot.name, timestampToString(slot.startTime), timestampToString(slot.endTime())))
 
 
