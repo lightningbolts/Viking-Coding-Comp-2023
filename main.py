@@ -39,31 +39,12 @@ def timestampInput(prompt):
 def rangeInput(prompt):
     print(prompt)
     start = timestampInput("\tEarliest acceptable time: ")
-    #There are 1339 minutes in one day, so if the time is more than that, its almost like theres 25 hours in a day
-    if start > 1339:
-        while start > 1339:
-            print("Please keep the time between 0:00 and 23:59")
-            start = timestampInput("\tEarliest acceptable time: ")
-
     end = timestampInput("\tLatest acceptable time: ")
-    if end > 1339:
-        while end > 1339:
-            print("Please keep the time between 0:00 and 23:59")
-            end = timestampInput("\tLatest acceptable time: ")
-
     return tuple([start, end])
 
 
 def letter(n):
     return chr(ord('A') + n)
-
-def verifyLunch(input, startTime, endTime):
-    if(input[0] < startTime or input[-1] < endTime ):
-        print("Please make sure lunch starts after school starts or before school ends. ")
-        return False
-    else:
-        return True
-
 
 
 class Slot:
@@ -93,21 +74,8 @@ class ClassPeriod(Slot):
         self.periodNumber = periodNumber
         Slot.__init__(self, f"Period {periodNumber + 1}", startTime, length, lunchNum)
 
-def main():
-    print("Bell Schedule Generator")
-    print("=" * 20)
 
-    numPeriods = intInput("How many periods are there? ")
-    startTime = timestampInput("When does school start? (24-hour time) ")
-    latestEndTime = timestampInput("When should school end, at the latest? (24-hour time) ")
-    passLen = intInput("How long is each passing period? (minutes) ")
-    lunchLen = intInput("How long is lunch? (minutes) ")
-    firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
-    realLunch = verifyLunch(firstLunchStartTimes, startTime, latestEndTime)
-    if(realLunch != True):
-        firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
-    numLunches = intInput("How many lunches are there? ")
-
+def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches):
     '''
     Values for testing
     '''
@@ -131,18 +99,18 @@ def main():
     # passLen = 5
     # startTime = stringToTimestamp("8:15")
     # latestEndTime = stringToTimestamp("15:15")
-    
+
     lunchAndPassLen = lunchLen + passLen
     maxDayLen = latestEndTime - startTime
-    try:
-        periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
-    except:
-        print("There must be at least 1 period.")
-        return
+    periodLen = math.floor((maxDayLen - lunchAndPassLen) / numPeriods - passLen)
     periodAndPassLen = periodLen + passLen
     numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
+<<<<<<< HEAD
 
     firstLunchStartTime = startTime + (numPeriodsBeforeLunch * periodAndPassLen)
+=======
+    firstLunchStartTime = startTime + numPeriodsBeforeLunch * periodAndPassLen
+>>>>>>> 48d72333230f8f5b73ffaab4ac9bbfe88a3bd925
 
     '''
     Errors
@@ -153,7 +121,10 @@ def main():
     if firstLunchStartTime < firstLunchStartTimes[0]:
         print("Error: It is not possible to fit all lunches and have first lunch in the specified timeframe.")
         return
+<<<<<<< HEAD
 
+=======
+>>>>>>> 48d72333230f8f5b73ffaab4ac9bbfe88a3bd925
 
     # The full schedule to be outputted.
     schedule = []
@@ -187,22 +158,22 @@ def main():
     # Schedule after all of the lunches, also the same for everyone
     for i in range(numPeriodsBeforeLunch + numLunches, numPeriods):
         addClass(i, startTime + lunchAndPassLen + i*periodAndPassLen, periodLen)
-        
+
     # Loop through the schedule and check to see if any classes with the same period number and different letter go from the same start time to the same end time
     # If so, combine them into one class with the same period number
     # This is done to make the schedule easier to read
-    
-    for i in range(len(schedule)):
-        for j in range(i+1, len(schedule)):
-            try:
-                if schedule[i].periodNumber == schedule[j].periodNumber and schedule[i].startTime == schedule[j].startTime and schedule[i].endTime() == schedule[j].endTime():
-                    schedule[i].name = schedule[i].name[:-3]
-                    schedule.pop(j)
-            except:
-                pass
-    
+
+    # for i in range(len(schedule)):
+    #     for j in range(i+1, len(schedule)):
+    #         try:
+    #             if schedule[i].periodNumber == schedule[j].periodNumber and schedule[i].startTime == schedule[j].startTime and schedule[i].endTime() == schedule[j].endTime():
+    #                 schedule[i].name = schedule[i].name[:-3]
+    #                 schedule.pop(j)
+    #         except:
+    #             pass
+    #
     # Sort the schedule by start time
-    schedule.sort(key=lambda slot: slot.startTime)
+    # schedule.sort(key=lambda slot: slot.startTime)
 
     # Output the schedule
     print()
@@ -216,5 +187,22 @@ def main():
         print('| {:^20} | {:>5} | {:>5} |'.format(slot.name, timestampToString(slot.startTime), timestampToString(slot.endTime())))
 
 
+def main():
+    print("Bell Schedule Generator")
+    print("=" * 20)
+
+    numPeriods = intInput("How many periods are there? ")
+    startTime = timestampInput("When does school start? (24-hour time) ")
+    latestEndTime = timestampInput("When should school end, at the latest? (24-hour time) ")
+    passLen = intInput("How long is each passing period? (minutes) ")
+    lunchLen = intInput("How long is lunch? (minutes) ")
+    firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
+    numLunches = intInput("How many lunches are there? ")
+    return scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches)
+
+
+
+
 if __name__ == "__main__":
-    main()
+    # main()
+    scheduler(7, 30, (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 2, 5, stringToTimestamp("8:15"), stringToTimestamp("15:15"))
