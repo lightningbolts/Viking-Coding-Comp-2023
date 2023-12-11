@@ -184,7 +184,7 @@ def main():
                 addClass(periodNum, currTime, periodLen, lunchNum)
                 currTime += periodAndPassLen
 
-    # Schedule after all of the lunches, also the same for everyone
+    # Schedule after all the lunches, also the same for everyone
     for i in range(numPeriodsBeforeLunch + numLunches, numPeriods):
         addClass(i, startTime + lunchAndPassLen + i*periodAndPassLen, periodLen)
         
@@ -217,4 +217,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    scheduler(7, 30, (stringToTimestamp("11:00"), stringToTimestamp("11:30")), 2, 5, stringToTimestamp("8:15"), stringToTimestamp("15:15"))
