@@ -124,6 +124,7 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     if passLen == 0:
         raise InvalidSchedule
     periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
+    print(periodLen)
     periodAndPassLen = periodLen + passLen
     schedule = []
 
