@@ -39,31 +39,12 @@ def timestampInput(prompt):
 def rangeInput(prompt):
     print(prompt)
     start = timestampInput("\tEarliest acceptable time: ")
-    #There are 1339 minutes in one day, so if the time is more than that, its almost like theres 25 hours in a day
-    if start > 1339:
-        while start > 1339:
-            print("Please keep the time between 0:00 and 23:59")
-            start = timestampInput("\tEarliest acceptable time: ")
-
     end = timestampInput("\tLatest acceptable time: ")
-    if end > 1339:
-        while end > 1339:
-            print("Please keep the time between 0:00 and 23:59")
-            end = timestampInput("\tLatest acceptable time: ")
-
     return tuple([start, end])
 
 
 def letter(n):
     return chr(ord('A') + n)
-
-def verifyLunch(input, startTime, endTime):
-    if(input[0] < startTime or input[-1] < endTime ):
-        print("Please make sure lunch starts after school starts or before school ends. ")
-        return False
-    else:
-        return True
-
 
 
 class Slot:
@@ -103,9 +84,6 @@ def main():
     passLen = intInput("How long is each passing period? (minutes) ")
     lunchLen = intInput("How long is lunch? (minutes) ")
     firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
-    realLunch = verifyLunch(firstLunchStartTimes, startTime, latestEndTime)
-    if(realLunch != True):
-        firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
     numLunches = intInput("How many lunches are there? ")
 
     '''
@@ -134,18 +112,10 @@ def main():
     
     lunchAndPassLen = lunchLen + passLen
     maxDayLen = latestEndTime - startTime
-    try:
-        periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
-    except:
-        print("There must be at least 1 period.")
-        return
+    periodLen = math.floor((maxDayLen - lunchAndPassLen) / numPeriods - passLen)
     periodAndPassLen = periodLen + passLen
-    try:
-        numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
-    except:
-        print("Passing period length must be more than 0 minutes.")
-        return
-    firstLunchStartTime = startTime + (numPeriodsBeforeLunch * periodAndPassLen)
+    numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
+    firstLunchStartTime = startTime + numPeriodsBeforeLunch * periodAndPassLen
 
     '''
     Errors
@@ -156,9 +126,6 @@ def main():
     if firstLunchStartTime < firstLunchStartTimes[0]:
         print("Error: It is not possible to fit all lunches and have first lunch in the specified timeframe.")
         return
-    #if firstLunchStartTimes[0] < startTime or firstLunchStartTimes[-1] > latestEndTime:
-       # print("Error: Lunch must start before or after school.")
-        #return
 
     # The full schedule to be outputted.
     schedule = []
@@ -194,15 +161,15 @@ def main():
     # If so, combine them into one class with the same period number
     # This is done to make the schedule easier to read
     
-    for i in range(len(schedule)):
-        for j in range(i+1, len(schedule)):
-            try:
-                if schedule[i].periodNumber == schedule[j].periodNumber and schedule[i].startTime == schedule[j].startTime and schedule[i].endTime() == schedule[j].endTime():
-                    schedule[i].name = schedule[i].name[:-3]
-                    schedule.pop(j)
-            except:
-                pass
-    
+    # for i in range(len(schedule)):
+    #     for j in range(i+1, len(schedule)):
+    #         try:
+    #             if schedule[i].periodNumber == schedule[j].periodNumber and schedule[i].startTime == schedule[j].startTime and schedule[i].endTime() == schedule[j].endTime():
+    #                 schedule[i].name = schedule[i].name[:-3]
+    #                 schedule.pop(j)
+    #         except:
+    #             pass
+    #
     # Sort the schedule by start time
     schedule.sort(key=lambda slot: slot.startTime)
 
