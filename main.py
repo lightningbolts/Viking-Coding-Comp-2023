@@ -157,8 +157,9 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
                 addSlot(f"Lunch", currTime, lunchLen, effectiveLunchNum)
                 currTime += lunchAndPassLen
 
-            addClass(periodNum, currTime, periodLen, effectiveLunchNum)
-            currTime += periodAndPassLen
+            if periodNum < numPeriodsBeforeLunch + numLunches - 1:
+                addClass(periodNum, currTime, periodLen, effectiveLunchNum)
+                currTime += periodAndPassLen
 
     # Schedule after all the lunches, also the same for everyone
     for i in range(numPeriodsBeforeLunch + numLunches - 1, numPeriods):
