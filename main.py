@@ -151,7 +151,7 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     for lunchNum in range(numLunches):
         currTime = startTime + numPeriodsBeforeLunch * periodAndPassLen
         effectiveLunchNum = None if numLunches == 1 else lunchNum
-        for periodNum in range(numPeriodsBeforeLunch, numPeriodsBeforeLunch + numLunches - 1):
+        for periodNum in range(numPeriodsBeforeLunch, numPeriodsBeforeLunch + numLunches):
             # If time for lunch
             if periodNum - numPeriodsBeforeLunch == lunchNum:
                 addSlot(f"Lunch", currTime, lunchLen, effectiveLunchNum)
