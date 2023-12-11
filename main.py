@@ -38,18 +38,17 @@ def timestampInput(prompt):
 
 def rangeInput(prompt):
     print(prompt)
+    minutesPerDay = stringToTimestamp("24:00")
+
     start = timestampInput("\tEarliest acceptable time: ")
-    #There are 1339 minutes in one day, so if the time is more than that, its almost like theres 25 hours in a day
-    if start > 1339:
-        while start > 1339:
-            print("Please keep the time between 0:00 and 23:59")
-            start = timestampInput("\tEarliest acceptable time: ")
+    while start >= minutesPerDay:
+        print("Please keep the time between 0:00 and 23:59")
+        start = timestampInput("\tEarliest acceptable time: ")
 
     end = timestampInput("\tLatest acceptable time: ")
-    if end > 1339:
-        while end > 1339:
-            print("Please keep the time between 0:00 and 23:59")
-            end = timestampInput("\tLatest acceptable time: ")
+    while end >= minutesPerDay:
+        print("Please keep the time between 0:00 and 23:59")
+        end = timestampInput("\tLatest acceptable time: ")
 
     return tuple([start, end])
 
