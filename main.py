@@ -89,7 +89,19 @@ def main():
     numPeriods = intInput("How many periods are there? ")
     startTime = timestampInput("When does school start? (24-hour time) ")
     latestEndTime = timestampInput("When should school end, at the latest? (24-hour time) ")
+    if latestEndTime < startTime:
+        while latestEndTime < startTime:
+            print("Error: School can't start before it ends. ")
+            startTime = timestampInput("When does school start? (24-hour time) ")
+            latestEndTime = timestampInput("When should school end, at the latest? (24-hour time) ")
+
+
     passLen = intInput("How long is each passing period? (minutes) ")
+    if passLen == 0:
+        while passLen == 0:
+            print("Error: Passing periods must be longer than 0 minutes. ")
+            passLen = intInput("How long is each passing period? (minutes) ")
+
     lunchLen = intInput("How long is lunch? (minutes) ")
     while True:
         firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
@@ -119,6 +131,7 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     lunchAndPassLen = lunchLen + passLen
     maxDayLen = latestEndTime - startTime
     periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
+
     periodAndPassLen = periodLen + passLen
     numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
 
@@ -127,6 +140,7 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     '''
     Errors
     '''
+
     if periodLen < 0:
         print("Error: There is not enough time in the school day to fit all periods and lunch.")
         return
