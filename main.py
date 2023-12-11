@@ -39,7 +39,7 @@ def timestampInput(prompt):
 def rangeInput(prompt):
     print(prompt)
     start = timestampInput("\tEarliest acceptable time: ")
-    #There are 1339 minutes in one day, so if the time is more than that, its almost like theres 25 hours in a day
+    # There are 1339 minutes in one day, so if the time is more than that, its almost like there's 25 hours in a day
     if start > 1339:
         while start > 1339:
             print("Please keep the time between 0:00 and 23:59")
@@ -63,7 +63,7 @@ class Slot:
     Any scheduled event occupying some period of time (e.g. classes, lunch, breaks, passing periods).
     """
 
-    def __init__(self, name, startTime, length, lunchNum = None):
+    def __init__(self, name, startTime, length, lunchNum=None):
         self.name = f"{name} {'' if lunchNum is None else f'({letter(lunchNum)})'}"
         self.startTime = startTime
         self.length = length
@@ -77,7 +77,7 @@ class Slot:
 
 
 class ClassPeriod(Slot):
-    def __init__(self, periodNumber, startTime, length, lunchNum = None):
+    def __init__(self, periodNumber, startTime, length, lunchNum=None):
         self.periodNumber = periodNumber
         Slot.__init__(self, f"Period {periodNumber + 1}", startTime, length, lunchNum)
 
@@ -115,7 +115,8 @@ def main():
     numLunches = intInput("How many lunches are there? ")
 
     try:
-        printSchedule(*scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches))
+        printSchedule(
+            *scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches))
     except InvalidSchedule:
         print()
 
@@ -163,7 +164,7 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
 
     # Schedule before lunch, which is the same for everyone
     for i in range(numPeriodsBeforeLunch):
-        addClass(i, startTime + i*periodAndPassLen, periodLen)
+        addClass(i, startTime + i * periodAndPassLen, periodLen)
 
     # Schedules for each of the different lunches
     for lunchNum in range(numLunches):
@@ -181,22 +182,23 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
 
     # Schedule after all the lunches, also the same for everyone
     for i in range(numPeriodsBeforeLunch + numLunches - 1, numPeriods):
-        addClass(i, startTime + lunchAndPassLen + i*periodAndPassLen, periodLen)
+        addClass(i, startTime + lunchAndPassLen + i * periodAndPassLen, periodLen)
 
     schedule.sort(key=lambda slot: slot.startTime)
 
     # Sort the schedule by start time
-    return (periodLen, schedule)
+    return periodLen, schedule
 
 
 def printSchedule(periodLen, schedule):
     print()
     print("Schedule")
-    print("="*20)
+    print("=" * 20)
     print(f"Classes are {periodLen} minutes long")
     print('| {:^20} | {:^5} | {:^5} |'.format("NAME", "START", "END"))
     for slot in schedule:
-        print('| {:^20} | {:>5} | {:>5} |'.format(slot.name, timestampToString(slot.startTime), timestampToString(slot.endTime())))
+        print('| {:^20} | {:>5} | {:>5} |'.format(slot.name, timestampToString(slot.startTime),
+                                                  timestampToString(slot.endTime())))
 
 
 if __name__ == "__main__":
