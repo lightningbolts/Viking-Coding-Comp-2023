@@ -82,6 +82,10 @@ class ClassPeriod(Slot):
         Slot.__init__(self, f"Period {periodNumber + 1}", startTime, length, lunchNum)
 
 
+class InvalidSchedule(Exception):
+    pass
+
+
 def main():
     print("Bell Schedule Generator")
     print("=" * 20)
@@ -105,12 +109,15 @@ def main():
     lunchLen = intInput("How long is lunch? (minutes) ")
     while True:
         firstLunchStartTimes = rangeInput("When does first lunch start? (24-hour time) ")
-        if firstLunchStartTimes[0] < startTime or firstLunchStartTimes[-1] < latestEndTime:
+        if firstLunchStartTimes[0] < startTime or firstLunchStartTimes[-1] > latestEndTime:
             print("Please make sure lunch starts after school starts or before school ends. ")
         break
     numLunches = intInput("How many lunches are there? ")
 
-    printSchedule(*scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches))
+    try:
+        printSchedule(*scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches))
+    except InvalidSchedule:
+        print()
 
 
 def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches):
@@ -125,31 +132,28 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     :return:
     """
 
-    '''
-    Preliminary calculations
-    '''
     lunchAndPassLen = lunchLen + passLen
     maxDayLen = latestEndTime - startTime
     periodLen = math.floor(((maxDayLen - lunchAndPassLen) / numPeriods - passLen))
 
     periodAndPassLen = periodLen + passLen
     numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
-
     firstLunchStartTime = startTime + (numPeriodsBeforeLunch * periodAndPassLen)
+    schedule = []
 
+<<<<<<< HEAD
     '''
     Errors
     '''
 
+=======
+>>>>>>> 649b2f37bd98f3bd7b67b30f603e30c0904bb9f9
     if periodLen < 0:
         print("Error: There is not enough time in the school day to fit all periods and lunch.")
-        return
+        raise InvalidSchedule
     if firstLunchStartTime < firstLunchStartTimes[0]:
         print("Error: It is not possible to fit all lunches and have first lunch in the specified timeframe.")
-        return
-
-    # The full schedule to be outputted.
-    schedule = []
+        raise InvalidSchedule
 
     def addSlot(*args):
         schedule.append(Slot(*args))
@@ -192,11 +196,8 @@ def printSchedule(periodLen, schedule):
     print(f"Classes are {periodLen} minutes long")
     print('| {:^20} | {:^5} | {:^5} |'.format("NAME", "START", "END"))
     for slot in schedule:
-        if slot.lunchNum is not None:
-            pass
         print('| {:^20} | {:>5} | {:>5} |'.format(slot.name, timestampToString(slot.startTime), timestampToString(slot.endTime())))
 
 
 if __name__ == "__main__":
-    # main()
     main()
