@@ -82,6 +82,10 @@ class ClassPeriod(Slot):
         Slot.__init__(self, f"Period {periodNumber + 1}", startTime, length, lunchNum)
 
 
+class InvalidSchedule(Exception):
+    pass
+
+
 def main():
     print("Bell Schedule Generator")
     print("=" * 20)
@@ -98,7 +102,10 @@ def main():
         break
     numLunches = intInput("How many lunches are there? ")
 
-    printSchedule(*scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches))
+    try:
+        printSchedule(*scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches))
+    except InvalidSchedule:
+        print()
 
 
 def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunchStartTimes, numLunches):
@@ -129,10 +136,10 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     '''
     if periodLen < 0:
         print("Error: There is not enough time in the school day to fit all periods and lunch.")
-        return
+        raise InvalidSchedule
     if firstLunchStartTime < firstLunchStartTimes[0]:
         print("Error: It is not possible to fit all lunches and have first lunch in the specified timeframe.")
-        return
+        raise InvalidSchedule
 
     # The full schedule to be outputted.
     schedule = []
