@@ -58,7 +58,7 @@ def letter(n):
     return chr(ord('A') + n)
 
 def verifyLunch(input, startTime, endTime):
-    if(input[0] < startTime or input[-1] < endTime ):
+    if(input[0] < startTime or input[-1] > endTime ):
         print("Please make sure lunch starts after school starts or before school ends. ")
         return False
     else:
