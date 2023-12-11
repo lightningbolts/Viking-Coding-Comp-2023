@@ -141,14 +141,6 @@ def scheduler(numPeriods, startTime, latestEndTime, passLen, lunchLen, firstLunc
     numPeriodsBeforeLunch = math.floor((firstLunchStartTimes[1] - startTime) / periodAndPassLen)
     firstLunchStartTime = startTime + (numPeriodsBeforeLunch * periodAndPassLen)
     schedule = []
-
-<<<<<<< HEAD
-    '''
-    Errors
-    '''
-
-=======
->>>>>>> 649b2f37bd98f3bd7b67b30f603e30c0904bb9f9
     if periodLen < 0:
         print("Error: There is not enough time in the school day to fit all periods and lunch.")
         raise InvalidSchedule
